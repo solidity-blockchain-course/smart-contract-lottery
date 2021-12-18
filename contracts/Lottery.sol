@@ -25,6 +25,7 @@ contract Lottery is VRFConsumerBase, Ownable {
     
     AggregatorV3Interface internal ethUsdPriceFeed;
     LOTTERY_STATE public lottery_state;
+    event RequestedRandomness(bytes32 requestId);
 
     constructor(
         address _priceFeedAddress,
@@ -66,6 +67,7 @@ contract Lottery is VRFConsumerBase, Ownable {
     function endLottery() public onlyOwner {
         lottery_state = LOTTERY_STATE.CALCULCATING_WINNER;
         bytes32 requestId = requestRandomness(keyHash, fee);
+        emit RequestedRandomness(requestId);
     }
 
     /*
