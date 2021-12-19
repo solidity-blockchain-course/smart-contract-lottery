@@ -2,6 +2,7 @@ from brownie import Lottery, network, config
 from scripts.helpers import fund_with_link, get_account, get_contract
 from web3 import Web3
 import time
+from datetime import datetime
 
 
 def deploy_lottery():
@@ -46,10 +47,18 @@ def end_lottery():
 
     ending_tx = lottery.endLottery({"from": account})
     ending_tx.wait(1)
+    request_id = ending_tx.events["RequestedRandomness"]["requestId"]
+    print(f"randmoness request-id: {request_id}")
 
     # wait for chainlink randomness query to complete
-    time.sleep(60)
+    time.sleep(300)
 
+    # print(f"starting {datetime.now().strftime('%H:%M:%S')}")
+    # while True:
+    #     print(lottery.randomness())
+    #     time.sleep(5)
+
+    print(f"randomness: {lottery.randomness()}")
     print(f"Lottery ended, recentWinner: {lottery.recentWinner()}")
 
 

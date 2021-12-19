@@ -9,7 +9,7 @@ from brownie import (
     Contract,
 )
 
-FORKED_LOCAL_ENVIRONMENTS = ["mainnet-fork", "mainnet-fork-dev"]
+FORKED_LOCAL_ENVIRONMENTS = ["mainnet-fork", "mainnet-fork-dev", "rinkeby-fork-dev"]
 LOCAL_BLOCKCHAIN_ENVIRONMENTS = ["development", "ganache-local"]
 
 
@@ -58,7 +58,7 @@ def get_contract(contract_name):
         contract_address = config["networks"][network.show_active()][contract_name]
         # return contract(address)
         contract = Contract.from_abi(
-            contract_type.name, contract_address, contract_type.abi
+            contract_type._name, contract_address, contract_type.abi
         )
 
     return contract
@@ -89,5 +89,5 @@ def fund_with_link(
     # tx = link_token_contract.transfer(amount, to_address, {"from": account})
 
     tx.wait(1)
-    print(f"Contract /{to_address}/ funded with {amount} LINK")
+    print(f"Contract /{to_address}/ funded with {amount / 10**18} LINK")
     return tx
